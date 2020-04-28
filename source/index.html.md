@@ -12,6 +12,9 @@ toc_footers:
   - <a href='https://github.com/slatedocs/slate'>Documentation Powered by Slate</a>
 
 includes:
+  - main
+  - backoffice
+  - messaging
   - errors
 
 search: true
@@ -236,4 +239,3 @@ This endpoint deletes a specific kitten.
 Parameter | Description
 --------- | -----------
 ID | The ID of the kitten to delete
-
