@@ -10,25 +10,32 @@ User must belong to listed ICUs to toggle message reception.
 
 Request arguments:
 
+```
 {
   user_id: 212039,
   icu_ids: [123, 434] // List of ICU ids,
   on: True // True to turn on, False to turn off,
   delay: 60 // Number of seconds to delay message sending
 }
+```
 
 ## Retrieve information about scheduled messages for a user
 POST /schedule
 
 Returns information about all scheduled messages for a user, including:
-icu_id: Optional[int] = None
-user_id: Optional[int] = None
-user_name: Optional[str] = None
-icu_name: Optional[str] = None
-phone: Optional[str] = None
-attempts: Optional[int] = 0
-first_sent: Optional[int] = None
-when: Optional[int] = None
-url: Optional[str] = None
+- icu_id
+- user_id
+- user_name
+- icu_name
+- phone
+- attempts
+- first_sent
+- when
+- url
 
-TODO: format the above better
+Request arguments:
+```
+{
+  user_id: 12345
+}
+```
