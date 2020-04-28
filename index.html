@@ -502,101 +502,179 @@ same regions as the ICUs that they are assigned to will be visible.</p>
 - <code>id</code>: the user&#39;s access token TODO: this should be the same for everything that has a APIKeyProtectedHandler, they&#39;re just written in the base class
 TODO: the code says &quot;the user object and the icu object encoded in the token&quot;??</p>
 <h1 id='back-office'>Back Office</h1><h2 id='user-actions'>User Actions</h2><h3 id='reset-consent-status-for-a-user'>Reset consent status for a user</h3>
-<p>POST /reset_consent</p>
+<p><code>POST /reset_consent</code></p>
 
-<p>Reset consent status for a user</p>
-<h3 id='login-the-user-from-the-login-page'>Login the user from the login page</h3>
-<p>POST /login</p>
+<p>Reset consent status for a user.</p>
 
-<p>Login the user from the login page form</p>
-<h3 id='log-the-user-out'>Log the user out</h3>
-<p>GET /logout</p>
+<p>Request arguments:</p>
+<pre class="highlight plaintext"><code>{
+  "12345" // the user id
+}
+</code></pre><h3 id='login-the-user-from-the-login-page'>Login the user from the login page</h3>
+<p><code>POST /login</code></p>
 
-<p>Logs the current user out</p>
+<p>Login the user from the login page form.</p>
+
+<p>Query arguments:
+- <code>next</code> (Optional): the URL to redirect if the user is already logged in. Can also be specified in the request body.</p>
+
+<p>Request arguments:</p>
+<pre class="highlight plaintext"><code>{
+  "email": "example@example.com",
+  "password": "12345",
+  "next": "/" // Can also be specified as a query param
+}
+</code></pre><h3 id='log-the-user-out'>Log the user out</h3>
+<p><code>GET /logout</code></p>
+
+<p>Logs the current user out.</p>
+
+<p>Query/request arguments: none</p>
 <h3 id='add-or-update-a-user-from-the-user-s-page'>Add or update a user from the user(s) page</h3>
-<p>POST /user</p>
+<p><code>POST /user</code></p>
 
 <p>Create a new user or update attributes of an existing user from the user form.</p>
-<h2 id='database-actions'>Database actions</h2><h3 id='update-an-icu-from-the-icu-s-page'>Update an ICU from the ICU(s) page</h3>
-<p>POST /icu</p>
+
+<p>Request arguments:</p>
+<pre class="highlight plaintext"><code>{
+  "password": "12345",
+  "user_id": 56789,
+  "name": "Dave Davidson",
+  "telephone": "8888888888",
+  "email": "",
+  "description": "",
+  "password_hash": "", // Strong hash of the password. Used for admin and manager users
+  "access_salt": "", // Used for regular users for passwordless access.
+  "is_active": "1", // 1 for true, 0 for false,
+  "is_admin": "0", // 1 for true, 0 for false
+  "locale": "", // Locale of the user for translations
+  "message_type": "email", // One of {email, sms},
+  "consent": true, // Consent to use ICUBAM,
+  "create_date": "2020-04-27 22-56-45",
+  "last_modified": "2020-04-27 22-56-45",
+  "icus" = [], // ICUs that the user is assigned to
+  "managed_icus" = [], // ICUs that the user manages
+}
+</code></pre><h2 id='database-actions'>Database actions</h2><h3 id='update-an-icu-from-the-icu-s-page'>Update an ICU from the ICU(s) page</h3>
+<p><code>POST /icu</code></p>
 
 <p>From the ICU page form:
 - Update whether an ICU is active or not
 AND/OR
 - Update an ICU&#39;s region id</p>
-<h3 id='add-or-update-a-region-from-the-region-s-page'>Add or update a region from the region(s) page</h3>
-<p>POST /region</p>
+
+<p>Request arguments:</p>
+<pre class="highlight plaintext"><code>{
+  "icu_id": 56789,
+  "region_id": 56789, // Region id that the ICU belongs to
+  "region": "ABC", // Name of the region that the ICU belongs to
+  "name": "ABC",
+  "legal_id": "ABC",
+  "dept": "ABC",
+  "city": "ABC",
+  "country": "ABC",
+  "lat": 11.752505,
+  "long": 158.695720,
+  "telephone": "9999999999",
+  "is_active": "1", // 1 for true, 0 for false
+  "create_date": "2020-04-27 22-56-45",
+  "last_modified": "2020-04-27 22-56-45",
+  "bed_counts" = [], // History of bed counts for the ICU
+  "users" = [], // Users assigned to the ICU
+  "managers" = [] // Users that can manage the ICU
+}
+</code></pre><h3 id='add-or-update-a-region-from-the-region-s-page'>Add or update a region from the region(s) page</h3>
+<p><code>POST /region</code></p>
 
 <p>Add a new region, or update the name of a region.</p>
 <h3 id='update-a-token-from-the-access-token-s-page'>Update a token from the access token(s) page</h3>
-<p>POST /token</p>
+<p><code>POST /token</code></p>
 
 <p>Update access information for an external client:
 - whether or not they are active
 - access type
 - access expiration date</p>
 <h3 id='sync-data-from-csv'>Sync data from CSV</h3>
-<p>POST /upload</p>
+<p><code>POST /upload</code></p>
 
 <p>Sync users, ICUs, or bedcounts from a CSV to the datastore.</p>
 <h2 id='page-rendering'>Page Rendering</h2><h3 id='render-page-for-all-bedcounts-for-icus-that-user-is-an-admin-for'>Render page for all bedcounts for ICUs that user is an admin for</h3>
-<p>GET /bedcounts</p>
+<p><code>GET /bedcounts</code></p>
 
 <p>Get all bedcounts for ICUs that user is an admin for</p>
 <h3 id='render-home-page'>Render home page</h3>
-<p>GET /</p>
+<p><code>GET /</code>`</p>
 
 <p>Renders home.html, which shows a tree view of ICUs that the user manages (TODO and users they manage?)</p>
 <h3 id='render-page-for-all-icus'>Render page for all ICUs</h3>
-<p>GET /list_icus</p>
+<p><code>GET /list_icus</code></p>
 
 <p>If the user is an admin, lists all ICUs. Otherwise, lists ICUs managed by the user.</p>
+
+<p>Query/request arguments: none</p>
 <h3 id='render-page-for-an-icu'>Render page for an ICU</h3>
-<p>GET /icu</p>
+<p><code>GET /icu</code></p>
 
 <p>Renders icu.html given the id for that ICU.</p>
+
+<p>Query arguments:
+- <code>id</code>: The id of the ICU to display.</p>
 <h3 id='render-login-page'>Render login page</h3>
-<p>GET /login</p>
+<p><code>GET /login</code></p>
 
 <p>Renders the login.html page. If the user is already logged in, redirects to the home page.</p>
-<h3 id='render-the-map-page'>Render the map page</h3>
-<p>GET /map</p>
+
+<p>Query arguments:
+- <code>next</code> (Optional): The URL to redirect if the user is already logged in. Can also be specified in the request body.
+- <code>error</code> (Optional): Whether or not an error message should be displayed. Can also be specified in the request body.</p>
+
+<p>Request arguments:</p>
+<pre class="highlight plaintext"><code>{
+  "next": "/", // Can also be specified as a query param
+  "error": False // Can also be specified as a query param
+}
+</code></pre><h3 id='render-the-map-page'>Render the map page</h3>
+<p><code>GET /map</code></p>
 
 <p>Renders map.html</p>
 <h3 id='render-page-for-all-scheduled-messages-for-a-user'>Render page for all scheduled messages for a user</h3>
-<p>GET /list_messages</p>
+<p><code>GET /list_messages</code></p>
 
 <p>Lists scheduled messages for a user by calling the Message Server Client</p>
 <h3 id='render-the-operational-dashboard-page'>Render the operational dashboard page</h3>
-<p>GET /operational-dashboard</p>
+<p><code>GET /operational-dashboard</code></p>
 
 <p>Serves a page with a table gathering current bedcount data with some extra information (operational-dashboard.html)</p>
 <h3 id='render-page-for-all-regions'>Render page for all regions</h3>
-<p>GET /list_regions</p>
+<p><code>GET /list_regions</code></p>
 
 <p>Renders a page with all regions listed.</p>
 <h3 id='render-page-for-a-region'>Render page for a region</h3>
-<p>GET /region</p>
+<p><code>GET /region</code></p>
 
 <p>Renders region.html given an id for that region.</p>
 <h3 id='render-page-for-all-tokens'>Render page for all tokens</h3>
-<p>GET /list_tokens</p>
+<p><code>GET /list_tokens</code></p>
 
 <p>Lists all external clients, whether or not they are active, their access type, and their access expiration date.</p>
 <h3 id='render-page-for-a-token'>Render page for a token</h3>
-<p>GET /token</p>
+<p><code>GET /token</code></p>
 
 <p>A token is an access token for an external client that can access ICUBAM data. Given a userid, this  page lists an external client, whether or not they are active, their access type, and their access expiration date.</p>
 <h3 id='render-page-that-lists-all-users'>Render page that lists all users</h3>
-<p>GET /list_users</p>
+<p><code>GET /list_users</code></p>
 
 <p>Render a page that lists all users, including forms to update them. If the current user is an admin, lists all users. Otherwise, lists users that the current user manages.</p>
+
+<p>Query/request arguments: none</p>
 <h3 id='render-page-for-current-user'>Render page for current user</h3>
-<p>GET /profile</p>
+<p><code>GET /profile</code></p>
 
 <p>Renders /user form for current user.</p>
+
+<p>Query/request arguments: none</p>
 <h3 id='render-page-for-a-user'>Render page for a user</h3>
-<p>GET /user</p>
+<p><code>GET /user</code></p>
 
 <p>Render the form for a user given their id. User data includes:
 - whether or not they are an admin
@@ -604,6 +682,9 @@ AND/OR
 - create date
 - ICUs they have access to
 - ICUs thet manage</p>
+
+<p>Query arguments:
+- <code>id</code> (Optional): The id of the user to display</p>
 <h1 id='messaging'>Messaging</h1><h2 id='activate-or-deactivate-reception-of-messages-for-a-user'>Activate or deactivate reception of messages for a user</h2>
 <p>POST /onoff</p>
 
@@ -613,28 +694,32 @@ informed so that they start receving messages. The user can then opt-out of mess
 User must belong to listed ICUs to toggle message reception.</p>
 
 <p>Request arguments:</p>
-
-<p>{
+<pre class="highlight plaintext"><code>{
   user_id: 212039,
   icu_ids: [123, 434] // List of ICU ids,
   on: True // True to turn on, False to turn off,
   delay: 60 // Number of seconds to delay message sending
-}</p>
-<h2 id='retrieve-information-about-scheduled-messages-for-a-user'>Retrieve information about scheduled messages for a user</h2>
+}
+</code></pre><h2 id='retrieve-information-about-scheduled-messages-for-a-user'>Retrieve information about scheduled messages for a user</h2>
 <p>POST /schedule</p>
 
 <p>Returns information about all scheduled messages for a user, including:
-icu_id: Optional[int] = None
-user_id: Optional[int] = None
-user_name: Optional[str] = None
-icu_name: Optional[str] = None
-phone: Optional[str] = None
-attempts: Optional[int] = 0
-first_sent: Optional[int] = None
-when: Optional[int] = None
-url: Optional[str] = None</p>
+- icu_id
+- user_id
+- user_name
+- icu_name
+- phone
+- attempts
+- first_sent
+- when
+- url</p>
 
-<p>TODO: format the above better</p>
+<p>Request arguments:
+<code>
+{
+  user_id: 12345
+}
+</code></p>
 
       </div>
       <div class="dark-box">
