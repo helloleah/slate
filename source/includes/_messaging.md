@@ -1,14 +1,8 @@
 # Messaging
 
 ## Activate or deactivate reception of messages for a user
-POST /onoff
 
-Used to activate of deactivate the reception of messages.
-When a new user is created, the message server should be
-informed so that they start receving messages. The user can then opt-out of messages.
-User must belong to listed ICUs to toggle message reception.
-
-Request arguments:
+> Request body
 
 ```
 {
@@ -19,8 +13,24 @@ Request arguments:
 }
 ```
 
+`POST /onoff`
+
+Used to activate of deactivate the reception of messages.
+When a new user is created, the message server should be
+informed so that they start receving messages. The user can then opt-out of messages.
+User must belong to listed ICUs to toggle message reception.
+
 ## Retrieve information about scheduled messages for a user
-POST /schedule
+
+> Request body
+
+```
+{
+  user_id: 12345
+}
+```
+
+`POST /schedule`
 
 Returns information about all scheduled messages for a user, including:
 - icu_id
@@ -32,10 +42,3 @@ Returns information about all scheduled messages for a user, including:
 - first_sent
 - when
 - url
-
-Request arguments:
-```
-{
-  user_id: 12345
-}
-```

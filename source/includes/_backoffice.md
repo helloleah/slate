@@ -1,13 +1,10 @@
-# Back Office
+# Admin
 
 ## User Actions
 
 ### Reset consent status for a user
-`POST /reset_consent`
 
-Reset consent status for a user.
-
-Request arguments:
+> Request body
 
 ```
 {
@@ -15,15 +12,13 @@ Request arguments:
 }
 ```
 
+`POST /reset_consent`
+
+Reset consent status for a user.
+
 ### Login the user from the login page
-`POST /login`
 
-Login the user from the login page form.
-
-Query arguments:
-- `next` (Optional): the URL to redirect if the user is already logged in. Can also be specified in the request body.
-
-Request arguments:
+> Request body
 
 ```
 {
@@ -33,6 +28,16 @@ Request arguments:
 }
 ```
 
+`POST /login`
+
+Login the user from the login page form.
+
+**Querystring parameters**
+
+Name | Type | Description
+-----|------|------------
+`next` | string | The URL to redirect if the user is already logged in. Can also be specified in the request body.
+
 ### Log the user out
 `GET /logout`
 
@@ -41,11 +46,8 @@ Logs the current user out.
 Query/request arguments: none
 
 ### Add or update a user from the user(s) page
-`POST /user`
 
-Create a new user or update attributes of an existing user from the user form.
-
-Request arguments:
+> Request body
 
 ```
 {
@@ -69,17 +71,15 @@ Request arguments:
 }
 ```
 
+`POST /user`
+
+Create a new user or update attributes of an existing user from the user form.
+
 ## Database actions
 
 ### Update an ICU from the ICU(s) page
-`POST /icu`
 
-From the ICU page form:
-- Update whether an ICU is active or not
-AND/OR
-- Update an ICU's region id
-
-Request arguments:
+> Request body
 
 ```
 {
@@ -103,20 +103,72 @@ Request arguments:
 }
 ```
 
+`POST /icu`
+
+From the ICU page form:
+
+- Update whether an ICU is active or not
+AND/OR
+- Update an ICU's region id
+
 ### Add or update a region from the region(s) page
+
+> Request body
+
+```
+{
+  "region_id": 12345,
+  "name": "ABCD",
+  "create_date": "2020-04-27 22-56-45",
+  "last_modified": "2020-04-27 22-56-45",
+  "icus": [] // ICUs in the region
+}
+```
+
 `POST /region`
 
 Add a new region, or update the name of a region.
 
 ### Update a token from the access token(s) page
+
+> Request body
+
+```
+{
+  "external_client_id": 12345,
+  "name": "ABCD",
+  "email": "example@example.com",
+  "telephone": "1234567890",
+  "access_key_hash": "ABCD", // Strong hash of the access key. It should be unique.
+  "access_key": "ABCD", // Be aware this will be removed at some point in the future.
+  "expiration_date": "2021-04-27 22-56-45", // If set, denotes the date that the access key expires.
+  "is_active": "1", // 1 for true, 0 for false.
+  "access_type": "1", // 1 for map access, 2 for database retrieve access, 3 for database upload access, 4 for all access
+  "create_date": "2020-04-27 22-56-45",
+  "last_modified": "2020-04-27 22-56-45",
+  "regions": [] // Regions that an external client can access.
+}
+```
+
 `POST /token`
 
 Update access information for an external client:
+
 - whether or not they are active
 - access type
 - access expiration date
 
 ### Sync data from CSV
+
+> Request body
+
+```
+{
+  "data": "", // CSV content
+  "objtype": "ICUs" // One of: {"ICUs", "Bed Counts", "Scheduled Messages", "Regions", "Users", "Access Tokens"}
+}
+```
+
 `POST /upload`
 
 Sync users, ICUs, or bedcounts from a CSV to the datastore.
@@ -126,38 +178,32 @@ Sync users, ICUs, or bedcounts from a CSV to the datastore.
 ### Render page for all bedcounts for ICUs that user is an admin for
 `GET /bedcounts`
 
-Get all bedcounts for ICUs that user is an admin for
+Renders a page with all bedcounts for ICUs that user is an admin for.
 
 ### Render home page
-`GET /``
+`GET /`
 
-Renders home.html, which shows a tree view of ICUs that the user manages (TODO and users they manage?)
+Renders home.html, which shows a tree view of ICUs that the user manages.
 
 ### Render page for all ICUs
 `GET /list_icus`
 
 If the user is an admin, lists all ICUs. Otherwise, lists ICUs managed by the user.
 
-Query/request arguments: none
-
 ### Render page for an ICU
 `GET /icu`
 
 Renders icu.html given the id for that ICU.
 
-Query arguments:
-- `id`: The id of the ICU to display.
+**Querystring parameters**
+
+Name | Type | Description
+-----|------|------------
+`id` | integer | The id of the ICU to display.
 
 ### Render login page
-`GET /login`
 
-Renders the login.html page. If the user is already logged in, redirects to the home page.
-
-Query arguments:
-- `next` (Optional): The URL to redirect if the user is already logged in. Can also be specified in the request body.
-- `error` (Optional): Whether or not an error message should be displayed. Can also be specified in the request body.
-
-Request arguments:
+> Request body
 
 ```
 {
@@ -166,22 +212,43 @@ Request arguments:
 }
 ```
 
+`GET /login`
 
+Renders the login.html page. If the user is already logged in, redirects to the home page.
+
+**Querystring parameters**
+
+Name | Type | Description
+-----|------|------------
+`next` | string | The URL to redirect if the user is already logged in. Can also be specified in the request body.
+`error` | boolean  | Whether or not an error message should be displayed. Can also be specified in the request body.
 
 ### Render the map page
 `GET /map`
 
-Renders map.html
+Renders map.html.
 
-### Render page for all scheduled messages for a user
+**Querystring parameters**
+
+Name | Type | Description
+-----|------|------------
+`level` | integer | The level to display data at. Must be one of {"country", "region", "dept", "city", "icu"}. Default is "dept."
+
+### Render page for all scheduled messages for current user
 `GET /list_messages`
 
-Lists scheduled messages for a user by calling the Message Server Client
+Lists scheduled messages for the current user.
 
 ### Render the operational dashboard page
 `GET /operational-dashboard`
 
-Serves a page with a table gathering current bedcount data with some extra information (operational-dashboard.html)
+Serves a page with a table gathering current bedcount data with some extra information (operational-dashboard.html).
+
+**Querystring parameters**
+
+Name | Type | Description
+-----|------|------------
+`region` | integer | The id of the region to limit the data to.
 
 ### Render page for all regions
 `GET /list_regions`
@@ -193,6 +260,11 @@ Renders a page with all regions listed.
 
 Renders region.html given an id for that region.
 
+**Querystring parameters**
+
+Name | Type | Description
+-----|------|------------
+`id` | integer | The id of the region to display.
 
 ### Render page for all tokens
 `GET /list_tokens`
@@ -204,29 +276,35 @@ Lists all external clients, whether or not they are active, their access type, a
 
 A token is an access token for an external client that can access ICUBAM data. Given a userid, this  page lists an external client, whether or not they are active, their access type, and their access expiration date.
 
+**Querystring parameters**
+
+Name | Type | Description
+-----|------|------------
+`id` | integer | The id of the token to display.
+
 ### Render page that lists all users
 `GET /list_users`
 
 Render a page that lists all users, including forms to update them. If the current user is an admin, lists all users. Otherwise, lists users that the current user manages.
-
-Query/request arguments: none
 
 ### Render page for current user
 `GET /profile`
 
 Renders /user form for current user.
 
-Query/request arguments: none
-
 ### Render page for a user
 `GET /user`
 
 Render the form for a user given their id. User data includes:
+
 - whether or not they are an admin
 - whether or not they are active
 - create date
 - ICUs they have access to
-- ICUs thet manage
+- ICUs they manage
 
-Query arguments:
-- `id` (Optional): The id of the user to display
+**Querystring parameters**
+
+Name | Type | Description
+-----|------|------------
+`id` | integer | The id of the user to display.
