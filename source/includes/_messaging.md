@@ -15,7 +15,7 @@
 
 `POST /onoff`
 
-Used to activate of deactivate the reception of messages.
+Activate or deactivate the reception of messages.
 When a new user is created, the message server should be
 informed so that they start receving messages. The user can then opt-out of messages.
 User must belong to listed ICUs to toggle message reception.
@@ -32,7 +32,7 @@ User must belong to listed ICUs to toggle message reception.
 
 `POST /schedule`
 
-Returns information about all scheduled messages for a user, including:
+Retrieve information about all scheduled messages for a user, including:
 - icu_id
 - user_id
 - user_name

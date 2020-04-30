@@ -35,9 +35,7 @@ Create a new user or update attributes of an existing user from the user form.
 ### Log the user out
 `GET /logout`
 
-Logs the current user out.
-
-Query/request arguments: none
+Log the current user out.
 
 ### Login the user from the login page
 
@@ -135,9 +133,9 @@ Sync users, ICUs, or bedcounts from a CSV to the datastore.
 
 Update access information for an external client:
 
-- whether or not they are active
-- access type
-- access expiration date
+- Whether or not they are active
+- Access type
+- Access expiration date
 
 ### Update an ICU from the ICU(s) page
 
@@ -178,7 +176,7 @@ AND/OR
 ### Render home page
 `GET /`
 
-Renders home.html, which shows a tree view of ICUs that the user manages.
+Render the admin home page (home.html), which shows a tree view of ICUs that the user manages.
 
 ### Render login page
 
@@ -193,12 +191,12 @@ Renders home.html, which shows a tree view of ICUs that the user manages.
 
 `GET /login`
 
-Renders the login.html page. If the user is already logged in, redirects to the home page.
+Render the admin login page (login.html). If the user is already logged in, redirects to the home page.
 
 ### Render page for a region
 `GET /region`
 
-Renders region.html given an id for that region.
+Render the page for a region (region.html).
 
 **Querystring parameters**
 
@@ -209,7 +207,7 @@ Name | Type | Description
 ### Render page for a token
 `GET /token`
 
-A token is an access token for an external client that can access ICUBAM data. Given a userid, this  page lists an external client, whether or not they are active, their access type, and their access expiration date.
+A token is an access token for an external client that can access ICUBAM data. Given a user's id, this page lists an external client, whether or not they are active, their access type, and their access expiration date.
 
 **Querystring parameters**
 
@@ -220,7 +218,7 @@ Name | Type | Description
 ### Render page for a user
 `GET /user`
 
-Render the form for a user given their id. User data includes:
+Render the form for a user, given their id. User data includes:
 
 - whether or not they are an admin
 - whether or not they are active
@@ -237,7 +235,7 @@ Name | Type | Description
 ### Render page for an ICU
 `GET /icu`
 
-Renders icu.html given the id for that ICU.
+Render a page for an ICU (icu.html).
 
 **Querystring parameters**
 
@@ -255,7 +253,7 @@ Name | Type | Description
 ### Render page for all bedcounts for ICUs that user is an admin for
 `GET /bedcounts`
 
-Renders a page with all bedcounts for ICUs that user is an admin for.
+Render a page with all bedcounts for ICUs that user is an admin for.
 
 ### Render page for all ICUs
 `GET /list_icus`
@@ -265,22 +263,22 @@ If the user is an admin, lists all ICUs. Otherwise, lists ICUs managed by the us
 ### Render page for all regions
 `GET /list_regions`
 
-Renders a page with all regions listed.
+Render a page with all regions listed.
 
 ### Render page for all scheduled messages for current user
 `GET /list_messages`
 
-Lists scheduled messages for the current user.
+List scheduled messages for the current user.
 
 ### Render page for all tokens
 `GET /list_tokens`
 
-Lists all external clients, whether or not they are active, their access type, and their access expiration date.
+List all external clients, whether or not they are active, their access type, and their access expiration date.
 
 ### Render page for current user
 `GET /profile`
 
-Renders /user form for current user.
+Render the user page for current user.
 
 ### Render page that lists all users
 `GET /list_users`
@@ -290,7 +288,7 @@ Render a page that lists all users, including forms to update them. If the curre
 ### Render the map page
 `GET /map`
 
-Renders map.html.
+Render the map view (map.html).
 
 **Querystring parameters**
 
@@ -301,7 +299,7 @@ Name | Type | Description
 ### Render the operational dashboard page
 `GET /operational-dashboard`
 
-Serves a page with a table gathering current bedcount data with some extra information (operational-dashboard.html).
+Serve a page with a table gathering current bedcount data with some extra information (operational-dashboard.html).
 
 **Querystring parameters**
 
