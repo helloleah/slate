@@ -1,6 +1,6 @@
 # Messaging
 
-## Activate or deactivate reception of messages for a user
+### Activate or deactivate reception of messages for a user
 
 > Request body
 
@@ -20,7 +20,7 @@ When a new user is created, the message server should be
 informed so that they start receving messages. The user can then opt-out of messages.
 User must belong to listed ICUs to toggle message reception.
 
-## Retrieve information about scheduled messages for a user
+### Retrieve information about scheduled messages for a user
 
 > Request body
 
